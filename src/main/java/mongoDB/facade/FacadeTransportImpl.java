@@ -1,21 +1,27 @@
 package mongoDB.facade;
 
-import com.mongodb.MongoClient;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 import mongoDB.exception.MailDejaDansLaCollectionException;
 import mongoDB.exception.MailNonTrouverException;
+import mongoDB.exception.PasDeTitreValideException;
+import mongoDB.fabrique.FabriqueAbonnementAnnuel;
+import mongoDB.fabrique.FabriqueAbonnementMensual;
+import mongoDB.fabrique.FabriqueGestionAbonnement;
+import mongoDB.fabrique.FabriqueTicket;
 import mongoDB.modele.Abonnement;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
 import org.bson.Document;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 import java.util.function.Consumer;
-
 
 
 public class FacadeTransportImpl implements FacadeTransport {
@@ -25,12 +31,17 @@ public class FacadeTransportImpl implements FacadeTransport {
     MongoDatabase mongoDatabase;
 
     public FacadeTransportImpl() {
-        mongoClient = new MongoClient("localhost", 27017);
-        mongoDatabase = mongoClient.getDatabase("gestionTransport");
-        //mongoDatabase.createCollection("transport");
+        this.mongoClient = MongoClients.create();
+
+        this.mongoDatabase = mongoClient.getDatabase("gestionTransport");
+
+        if (mongoDatabase.getCollection("transport")==null){
+            mongoDatabase.createCollection("transport");
+        }
+
         MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
 
-      //  transport.deleteMany(new Document());
+       //  transport.deleteMany(new Document());
 
 
 
@@ -172,7 +183,7 @@ public class FacadeTransportImpl implements FacadeTransport {
         
        if (getAllMails().contains(gestionAbonnement.getMailUtilisateur())){
 
-           throw new MailDejaDansLaCollectionException("Le mail utilisateur existe deja");
+           throw new MailDejaDansLaCollectionException("L'utilisateur existe deja");
 
        }else {
 
@@ -218,28 +229,144 @@ public class FacadeTransportImpl implements FacadeTransport {
     }
 
     @Override
-    public Optional<Document> getDateFin(String mail) throws MailNonTrouverException {
+    public Collection<GestionAbonnement> getAllGestions() {
 
-        if (!getAllMails().contains(mail)) {
-            throw new MailNonTrouverException("mail non trouvé");
-
-        } else {
 
             MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
 
+            Collection<GestionAbonnement> resultat = new ArrayList<>();
+
+              Consumer<Document> consumer = e ->
+
+            {
+
+                GestionAbonnement gestionAbonnement=null;
+
+                Collection<Ticket> tickets= new ArrayList<>();
+
+                List<Document> ticketsDocument= e.getList("tickets",Document.class);
+
+             if (ticketsDocument==null){
+                 Document abonnement = e.get("abonnement",Document.class);
+                 Abonnement abonnement1;
+
+                 if (abonnement!=null){
+
+                     if (abonnement.getString("type").equals("mensual")){
+
+                         abonnement1= FabriqueAbonnementMensual.createAbonnementMensual(abonnement.getObjectId("_id"),abonnement.getString("type"),abonnement.getString("dateDebut"),abonnement.getString("dateFin"),abonnement.getString("etat"));
+
+                     }else{
+
+                         abonnement1= FabriqueAbonnementAnnuel.createAbonnementAnnuel(abonnement.getObjectId("_id"),abonnement.getString("type"),abonnement.getString("dateDebut"),abonnement.getString("dateFin"),abonnement.getString("etat"));
+
+                     }
+                     gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(e.getObjectId("_id"),e.getString("mailUtilisateur"),abonnement1);
+
+                 }else {
+                     gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(e.getObjectId("_id"),e.getString("mailUtilisateur"));
+
+                 }
+
+             }else {
+                 for (Document d: ticketsDocument
+                 ) {
+
+                     Ticket ticket  =  FabriqueTicket.createTicket(d.getObjectId("_id"), d.getString("dateAchat"),d.getString("etat"));
+                     tickets.add(ticket);
+                 }
+                 Document abonnement = e.get("abonnement",Document.class);
+                 Abonnement abonnement1;
+
+                 if (abonnement!=null){
+
+                     if (abonnement.getString("type").equals("mensual")){
+
+                         abonnement1= FabriqueAbonnementMensual.createAbonnementMensual(abonnement.getObjectId("_id"),abonnement.getString("type"),abonnement.getString("dateDebut"),abonnement.getString("dateFin"),abonnement.getString("etat"));
+
+                     }else{
+
+                         abonnement1= FabriqueAbonnementAnnuel.createAbonnementAnnuel(abonnement.getObjectId("_id"),abonnement.getString("type"),abonnement.getString("dateDebut"),abonnement.getString("dateFin"),abonnement.getString("etat"));
+
+                     }
+                     gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(e.getObjectId("_id"),e.getString("mailUtilisateur"),abonnement1,tickets);
+
+                 }else {
+                     gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(e.getObjectId("_id"),e.getString("mailUtilisateur"),tickets);
+
+                 }
+             }
 
 
-            Optional<Document> document = Optional.ofNullable(transport.find().filter(Filters.eq("mailUtilisateur", mail)).first());
+
+
+                resultat.add(gestionAbonnement);
+
+
+            };
+
+
+            transport.find().forEach(consumer);
+
+              return resultat;
 
 
 
+    }
+
+    @Override
+    public GestionAbonnement getGestion(String mail) throws MailNonTrouverException{
+        Collection<GestionAbonnement> gestionAbonnements = getAllGestions();
+        GestionAbonnement gestionAbonnement1 = null;
+
+        for (GestionAbonnement gestionAbonnement : gestionAbonnements){
+            if (gestionAbonnement.getMailUtilisateur().equals(mail)){
+                gestionAbonnement1= gestionAbonnement ;
 
 
-            return document;
+            }else {
+                throw new MailNonTrouverException("le mail n'existe pas dans la base");
+            }
+        }
+
+        return gestionAbonnement1;
+    }
+
+    @Override
+    public void validerTicket(String mail) throws MailNonTrouverException, PasDeTitreValideException {
+
+       //TODO: changer la valeur du ticket de valide a expirer
 
 
+        Collection<Ticket> tickets=getGestion(mail).getTickets();
+        Ticket ticketUpdate=null;
+
+        for (Ticket ticket : tickets){
+            if (ticket.getEtat().equals("valide")){
+                ticketUpdate = ticket;
+
+                ticketUpdate.setEtat("expire");
+
+
+
+                MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
+                Document document = acheterTicket(ticketUpdate);
+
+                Document abb = new Document("tickets", ticket.getId());
+
+                Document ubdate = new Document("$set",new Document("tickets",document));
+
+                transport.updateOne(abb,ubdate);
+
+                break;
+
+
+            }else {
+                throw new PasDeTitreValideException("vous avez pas de titre valide ");
+            }
         }
     }
+
 
 
 }

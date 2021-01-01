@@ -25,6 +25,19 @@ public class FabriqueTicket {
     }
 
 
+    public static Ticket createTicket(ObjectId objectId,String dateAchat,String etat){
+
+
+        Ticket ticket= new Ticket();
+        ticket.setId(objectId);
+        ticket.setDateAchat(dateAchat);
+        ticket.setEtat(etat);
+
+
+
+        return ticket;
+    }
+
     public static Collection<Ticket> createDixTicket(){
         Collection<Ticket> tickets = new ArrayList<>();
 

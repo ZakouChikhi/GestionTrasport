@@ -2,13 +2,13 @@ package mongoDB.facade;
 
 import mongoDB.exception.MailDejaDansLaCollectionException;
 import mongoDB.exception.MailNonTrouverException;
+import mongoDB.exception.PasDeTitreValideException;
 import mongoDB.modele.Abonnement;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
 import org.bson.Document;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public interface FacadeTransport {
 
@@ -30,7 +30,13 @@ public interface FacadeTransport {
 
    Collection<String> getAllMails();
 
-   Optional<Document> getDateFin(String mail) throws MailNonTrouverException;
+   Collection<GestionAbonnement> getAllGestions() ;
+
+   GestionAbonnement getGestion(String mail)throws MailNonTrouverException;
+
+   void validerTicket(String mail) throws MailNonTrouverException, PasDeTitreValideException;
+
+
 
 
 }

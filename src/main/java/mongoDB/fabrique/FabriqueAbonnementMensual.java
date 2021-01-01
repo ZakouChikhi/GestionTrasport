@@ -25,6 +25,18 @@ public class FabriqueAbonnementMensual {
 
         return abonnement;
     }
+    public static Abonnement createAbonnementMensual(ObjectId objectId,String type, String dateDebut,String dateFin,String etat){
+
+        Abonnement abonnement= new Abonnement();
+        abonnement.setId(objectId);
+        abonnement.setType(type);
+        abonnement.setDateDebut(dateDebut);
+        abonnement.setDateFin(dateFin);
+        abonnement.setEtat(etat);
+
+
+        return abonnement;
+    }
 
 
     }

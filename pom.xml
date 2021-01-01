@@ -23,10 +23,11 @@
 
     <dependencies>
 
+
         <dependency>
             <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>3.4.1</version>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>4.1.1</version>
         </dependency>
 
     </dependencies>
