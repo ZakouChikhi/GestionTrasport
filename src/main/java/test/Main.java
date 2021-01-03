@@ -1,5 +1,7 @@
 package test;
 
+import Authentification.facade.FacadeUser;
+import Authentification.facade.FacadeUserImpl;
 import mongoDB.exception.MailDejaDansLaCollectionException;
 import mongoDB.exception.MailNonTrouverException;
 import mongoDB.exception.PasDabonnementValideException;
@@ -20,7 +22,7 @@ import java.util.Collection;
 public class Main {
     public static void main(String[] args) throws MailDejaDansLaCollectionException, MailNonTrouverException, PasDeTitreValideException, ParseException, PasDabonnementValideException {
 
-        String mail="zakaria@live.fr";
+        /*String mail="zakaria@live.fr";
         Abonnement abonnement = FabriqueAbonnementMensual.createAbonnementMensual();
         Ticket ticket = FabriqueTicket.createTicket();
 
@@ -30,7 +32,7 @@ public class Main {
 
         GestionAbonnement gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(mail,abonnement,tickets);
 
-        FacadeTransport facadeTransport = new FacadeTransportImpl();
+        FacadeTransport facadeTransport = new FacadeTransportImpl();*/
 
 
     //   facadeTransport.creerGestionAbonnement(gestionAbonnement);
@@ -52,7 +54,11 @@ public class Main {
      //   facadeTransport.creerGestionAbonnement(gestionAbonnement);
 
 
-         facadeTransport.validerAbonnement(mail);
+        // facadeTransport.validerAbonnement(mail);
+
+        FacadeUser faceUser = new FacadeUserImpl();
+        String email = faceUser.getEmailById(1);
+        System.out.println(email);
 
 
 
