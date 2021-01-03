@@ -91,9 +91,7 @@ public class FabriqueGestionAbonnement {
 
         gestionAbonnement.setMailUtilisateur(mail);
         gestionAbonnement.setId(objectId);
-
-
-
+        
 
         return gestionAbonnement;
     }

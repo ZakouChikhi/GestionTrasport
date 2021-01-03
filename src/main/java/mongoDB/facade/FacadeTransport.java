@@ -2,12 +2,14 @@ package mongoDB.facade;
 
 import mongoDB.exception.MailDejaDansLaCollectionException;
 import mongoDB.exception.MailNonTrouverException;
+import mongoDB.exception.PasDabonnementValideException;
 import mongoDB.exception.PasDeTitreValideException;
 import mongoDB.modele.Abonnement;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
 import org.bson.Document;
 
+import java.text.ParseException;
 import java.util.Collection;
 
 public interface FacadeTransport {
@@ -36,6 +38,7 @@ public interface FacadeTransport {
 
    void validerTicket(String mail) throws MailNonTrouverException, PasDeTitreValideException;
 
+   void validerAbonnement(String mail) throws MailNonTrouverException, PasDabonnementValideException, ParseException;
 
 
 

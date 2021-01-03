@@ -7,6 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import mongoDB.exception.MailDejaDansLaCollectionException;
 import mongoDB.exception.MailNonTrouverException;
+import mongoDB.exception.PasDabonnementValideException;
 import mongoDB.exception.PasDeTitreValideException;
 import mongoDB.fabrique.FabriqueAbonnementAnnuel;
 import mongoDB.fabrique.FabriqueAbonnementMensual;
@@ -15,12 +16,13 @@ import mongoDB.fabrique.FabriqueTicket;
 import mongoDB.modele.Abonnement;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
+import mongoDB.timer.TimerTicket;
 import org.bson.Document;
-
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.function.Consumer;
 
 
@@ -41,7 +43,7 @@ public class FacadeTransportImpl implements FacadeTransport {
 
         MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
 
-       //  transport.deleteMany(new Document());
+     //   transport.deleteMany(new Document());
 
 
 
@@ -244,6 +246,7 @@ public class FacadeTransportImpl implements FacadeTransport {
 
                 Collection<Ticket> tickets= new ArrayList<>();
 
+
                 List<Document> ticketsDocument= e.getList("tickets",Document.class);
 
              if (ticketsDocument==null){
@@ -335,38 +338,80 @@ public class FacadeTransportImpl implements FacadeTransport {
     @Override
     public void validerTicket(String mail) throws MailNonTrouverException, PasDeTitreValideException {
 
-       //TODO: changer la valeur du ticket de valide a expirer
-
-
         Collection<Ticket> tickets=getGestion(mail).getTickets();
+        int i = 0;
         Ticket ticketUpdate=null;
 
         for (Ticket ticket : tickets){
+
+
             if (ticket.getEtat().equals("valide")){
+
+                System.out.println("votre ticket est valide pour une heure");
+                i++;
+
                 ticketUpdate = ticket;
-
                 ticketUpdate.setEtat("expire");
-
-
-
+                tickets.remove(ticket);
+                tickets.add(ticketUpdate);
                 MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
-                Document document = acheterTicket(ticketUpdate);
+                Collection<Document> documents = acheterDixTicket(tickets);
 
-                Document abb = new Document("tickets", ticket.getId());
 
-                Document ubdate = new Document("$set",new Document("tickets",document));
+                Timer chrono = new Timer();
+                chrono.schedule(new TimerTicket(mail,documents,transport),36000000);
 
-                transport.updateOne(abb,ubdate);
 
                 break;
 
-
-            }else {
-                throw new PasDeTitreValideException("vous avez pas de titre valide ");
             }
+        }
+        if (i==0){
+            throw new PasDeTitreValideException("vous avez pas de titre valide");
         }
     }
 
+    @Override
+    public void validerAbonnement(String mail) throws MailNonTrouverException, PasDabonnementValideException, ParseException {
+        Abonnement abonnement = getGestion(mail).getAbonnement();
+
+        if (abonnement!=null){
+
+
+        LocalDate localDate = LocalDate.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date present = sdf.parse(dtf.format(localDate));
+        Date dateDebut = sdf.parse(abonnement.getDateDebut());
+        Date dateFin = sdf.parse(abonnement.getDateFin());
+
+
+
+
+        if ((present.compareTo(dateDebut)>=0 ) && (present.compareTo(dateFin)<=0)){
+
+            System.out.println("votre abonnement est valide jusqu'a " + abonnement.getDateFin());
+
+
+        }else {
+
+            Abonnement abonnementUpdate = abonnement;
+            abonnementUpdate.setEtat("expire");
+            uptadeAbonnement(mail,abonnementUpdate);
+
+            throw new PasDabonnementValideException("vous avez pas d'abonnement valide");
+        }
+
+    }else {
+            throw new PasDabonnementValideException("vous avez pas d'abonnement valide");
+        }
+
+
+
+
+    }
 
 
 }
