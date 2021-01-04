@@ -4,7 +4,8 @@ import Authentification.modele.Utilisateur;
 
 public interface FacadeUser {
     void logIn(String username, String password);
-    void logOut();
+    void logOut(Utilisateur user);
     void singIn(Utilisateur user);
-    void signOut();
+    void signOut(Utilisateur user);
+    String getEmailById(int id);
 }

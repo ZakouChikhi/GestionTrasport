@@ -43,7 +43,32 @@ public class FacadeUserImpl implements FacadeUser {
     }
 
     //Deconnexion d'un utilisateur
-    public void logOut() {
+    public void logOut(Utilisateur user) {
+        String databaseUsername = "";
+
+        DatabaseParameters data = new DatabaseParameters();
+
+        try{
+            Connection myConn = DriverManager.getConnection(data.url, data.username, data.password);
+            Statement myStmt = myConn.createStatement();
+            String SQL = "SELECT * FROM utilisateur WHERE username='" + user.getUsername() + "'";
+
+            ResultSet rs = myStmt.executeQuery(SQL);
+
+            // Check Username and Password
+            while (rs.next()) {
+                databaseUsername = rs.getString("username");
+            }
+
+        }catch (Exception exc){
+            exc.printStackTrace();
+        }
+
+        if (databaseUsername != ""){
+            System.out.println("Vous etes deconnecté");
+        }else{
+            System.out.println("Echec");
+        }
 
 
     }
@@ -71,7 +96,51 @@ public class FacadeUserImpl implements FacadeUser {
     }
 
     //Procedure de desinscription
-    public void signOut() {
+    public void signOut(Utilisateur user) {
+        DatabaseParameters data = new DatabaseParameters();
 
+        try{
+            Connection myConn = DriverManager.getConnection(data.url, data.username, data.password);
+            Statement myStmt = myConn.createStatement();
+            String SQL = "DELETE FROM `utilisateur` WHERE username='" + user.getUsername() +"'";
+
+            ResultSet rs = myStmt.executeQuery(SQL);
+
+        }catch (Exception exc){
+            exc.printStackTrace();
+        }
+
+        System.out.println("Utilisteur desinscrit");
+
+    }
+
+    @Override
+    public String getEmailById(int id) {
+        String databaseEmail = "";
+
+        DatabaseParameters data = new DatabaseParameters();
+
+        try{
+            Connection myConn = DriverManager.getConnection(data.url, data.username, data.password);
+            Statement myStmt = myConn.createStatement();
+            String SQL = "SELECT * FROM utilisateur WHERE id='" + id + "'";
+
+            ResultSet rs = myStmt.executeQuery(SQL);
+
+            // Check Username and Password
+            while (rs.next()) {
+                databaseEmail = rs.getString("email");
+            }
+
+        }catch (Exception exc){
+            exc.printStackTrace();
+        }
+
+        if (databaseEmail != ""){
+            return databaseEmail;
+        }else{
+            System.out.println("Echec");
+        }
+        return null;
     }
 }
