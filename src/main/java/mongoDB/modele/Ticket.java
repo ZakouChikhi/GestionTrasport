@@ -31,4 +31,14 @@ public class Ticket {
     public void setEtat(String etat) {
         this.etat = etat;
     }
+
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", dateAchat='" + dateAchat + '\'' +
+                ", etat='" + etat + '\'' +
+                '}';
+    }
 }

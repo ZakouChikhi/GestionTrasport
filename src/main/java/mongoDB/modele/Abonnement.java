@@ -52,4 +52,14 @@ public class Abonnement {
     }
 
 
+    @Override
+    public String toString() {
+        return "Abonnement{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", dateDebut='" + dateDebut + '\'' +
+                ", dateFin='" + dateFin + '\'' +
+                ", etat='" + etat + '\'' +
+                '}';
+    }
 }

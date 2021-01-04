@@ -45,4 +45,15 @@ public class GestionAbonnement {
     public void setTickets(Collection<Ticket> tickets) {
         this.tickets = tickets;
     }
+
+
+    @Override
+    public String toString() {
+        return "GestionAbonnement{" +
+                "id=" + id +
+                ", mailUtilisateur='" + mailUtilisateur + '\'' +
+                ", abonnement=" + abonnement +
+                ", tickets=" + tickets +
+                '}';
+    }
 }

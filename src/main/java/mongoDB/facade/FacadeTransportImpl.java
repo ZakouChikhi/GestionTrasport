@@ -16,6 +16,7 @@ import mongoDB.fabrique.FabriqueTicket;
 import mongoDB.modele.Abonnement;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
+import mongoDB.mongo.Mongo;
 import mongoDB.timer.TimerTicket;
 import org.bson.Document;
 import java.text.ParseException;
@@ -26,13 +27,15 @@ import java.util.*;
 import java.util.function.Consumer;
 
 
-public class FacadeTransportImpl implements FacadeTransport {
+public class FacadeTransportImpl  implements FacadeTransport  {
 
 
     MongoClient mongoClient ;
     MongoDatabase mongoDatabase;
 
+
     public FacadeTransportImpl() {
+
         this.mongoClient = MongoClients.create();
 
         this.mongoDatabase = mongoClient.getDatabase("gestionTransport");
@@ -41,9 +44,7 @@ public class FacadeTransportImpl implements FacadeTransport {
             mongoDatabase.createCollection("transport");
         }
 
-        MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
-
-     //   transport.deleteMany(new Document());
+     // mongoDatabase.getCollection("transport").deleteMany(new Document());
 
 
 
@@ -114,6 +115,8 @@ public class FacadeTransportImpl implements FacadeTransport {
 
             transport.updateOne(abb,ubdate);
 
+            System.out.println("vous venez de souscrire à l'abonnement " + abonnement.getType() + " jusqu'a " + abonnement.getDateFin());
+
 
 
 
@@ -142,6 +145,9 @@ public class FacadeTransportImpl implements FacadeTransport {
 
             transport.updateOne(abb, ubdate);
 
+            System.out.println("vous venez d'acheter un ticket " );
+
+
 
         }
     }
@@ -156,7 +162,7 @@ public class FacadeTransportImpl implements FacadeTransport {
         @Override
         public void uptadeDixTicket(String mailUtilisateur,Collection<Ticket> tickets) throws MailNonTrouverException {
 
-            //TODO:
+
 
 
             if (!getAllMails().contains(mailUtilisateur)){
@@ -180,7 +186,7 @@ public class FacadeTransportImpl implements FacadeTransport {
     @Override
     public void creerGestionAbonnement(GestionAbonnement gestionAbonnement) throws MailDejaDansLaCollectionException {
 
-        //TODO:
+
 
         
        if (getAllMails().contains(gestionAbonnement.getMailUtilisateur())){
@@ -189,13 +195,9 @@ public class FacadeTransportImpl implements FacadeTransport {
 
        }else {
 
-
            MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
 
-
-
-
-           Document gestionA = new Document("_id", gestionAbonnement.getId())
+            Document gestionA = new Document("_id", gestionAbonnement.getId())
                    .append("mailUtilisateur",gestionAbonnement.getMailUtilisateur());
 
            if (gestionAbonnement.getAbonnement()!= null){
@@ -219,11 +221,10 @@ public class FacadeTransportImpl implements FacadeTransport {
 
     @Override
     public Collection<String> getAllMails() {
+
         MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
         Collection<String> resultats = new ArrayList<>();
         Consumer<Document> consumer = d -> resultats.add(d.getString("mailUtilisateur"));
-
-
         transport.find().forEach(consumer);
 
         return resultats;
@@ -235,7 +236,6 @@ public class FacadeTransportImpl implements FacadeTransport {
 
 
             MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
-
             Collection<GestionAbonnement> resultat = new ArrayList<>();
 
               Consumer<Document> consumer = e ->
@@ -243,13 +243,11 @@ public class FacadeTransportImpl implements FacadeTransport {
             {
 
                 GestionAbonnement gestionAbonnement=null;
-
                 Collection<Ticket> tickets= new ArrayList<>();
-
-
                 List<Document> ticketsDocument= e.getList("tickets",Document.class);
 
              if (ticketsDocument==null){
+
                  Document abonnement = e.get("abonnement",Document.class);
                  Abonnement abonnement1;
 
@@ -327,9 +325,10 @@ public class FacadeTransportImpl implements FacadeTransport {
                 gestionAbonnement1= gestionAbonnement ;
 
 
-            }else {
-                throw new MailNonTrouverException("le mail n'existe pas dans la base");
             }
+        }
+        if (gestionAbonnement1==null){
+            throw new MailNonTrouverException("le mail n'existe pas dans la base");
         }
 
         return gestionAbonnement1;
