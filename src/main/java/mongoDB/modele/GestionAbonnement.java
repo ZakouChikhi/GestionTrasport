@@ -4,6 +4,10 @@ import org.bson.types.ObjectId;
 
 import java.util.Collection;
 
+
+/**
+ * represent une gestion d'abonnement d'un utilisateur
+ */
 public class GestionAbonnement {
 
     private ObjectId id;

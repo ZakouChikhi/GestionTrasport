@@ -9,6 +9,13 @@ import java.util.Collection;
 
 public class FabriqueGestionAbonnement {
 
+    /**
+     * permet de creer une gestion d'abonnement à partir des entrées
+     * @param mail
+     * @param abonnement
+     * @param tickets
+     * @return
+     */
     public static GestionAbonnement createGestionAbonnement(String mail,Abonnement abonnement, Collection<Ticket> tickets){
         GestionAbonnement gestionAbonnement = new GestionAbonnement();
 
@@ -20,6 +27,13 @@ public class FabriqueGestionAbonnement {
 
         return gestionAbonnement;
     }
+
+    /**
+     * permet de creer une gestion d'abonnement à partir des entrées
+     * @param mail
+     * @param abonnement
+     * @return
+     */
     public static GestionAbonnement createGestionAbonnement(String mail,Abonnement abonnement){
         GestionAbonnement gestionAbonnement = new GestionAbonnement();
 
@@ -31,6 +45,14 @@ public class FabriqueGestionAbonnement {
 
         return gestionAbonnement;
     }
+
+
+    /**
+     * permet de creer une gestion d'abonnement à partir des entrées
+     * @param mail
+     * @param tickets
+     * @return
+     */
     public static GestionAbonnement createGestionAbonnement(String mail,Collection<Ticket> tickets){
         GestionAbonnement gestionAbonnement = new GestionAbonnement();
 
@@ -42,6 +64,12 @@ public class FabriqueGestionAbonnement {
 
         return gestionAbonnement;
     }
+
+    /**
+     * permet de creer une gestion d'abonnement à partir des entrées
+     * @param mail
+     * @return
+     */
     public static GestionAbonnement createGestionAbonnement(String mail){
         GestionAbonnement gestionAbonnement = new GestionAbonnement();
 
@@ -64,6 +92,15 @@ public class FabriqueGestionAbonnement {
 
         return gestionAbonnement;
     }
+
+
+    /**
+     * permet de creer une gestion d'abonnement à partir de la collection
+     * @param objectId
+     * @param mail
+     * @param tickets
+     * @return
+     */
     public static GestionAbonnement createGestionAbonnement(ObjectId objectId,String mail,Collection<Ticket> tickets){
         GestionAbonnement gestionAbonnement = new GestionAbonnement();
 
@@ -75,6 +112,14 @@ public class FabriqueGestionAbonnement {
 
         return gestionAbonnement;
     }
+
+    /**
+     * permet de creer une gestion d'abonnement à partir de la collection
+     * @param objectId
+     * @param mail
+     * @param abonnement
+     * @return
+     */
     public static GestionAbonnement createGestionAbonnement(ObjectId objectId,String mail,Abonnement abonnement){
         GestionAbonnement gestionAbonnement = new GestionAbonnement();
 
@@ -86,6 +131,14 @@ public class FabriqueGestionAbonnement {
 
         return gestionAbonnement;
     }
+
+
+    /**
+     * permet de creer une gestion d'abonnement à partir de la collection
+     * @param objectId
+     * @param mail
+     * @return
+     */
     public static GestionAbonnement createGestionAbonnement(ObjectId objectId,String mail){
         GestionAbonnement gestionAbonnement = new GestionAbonnement();
 

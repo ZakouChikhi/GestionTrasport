@@ -2,6 +2,9 @@ package mongoDB.modele;
 
 import org.bson.types.ObjectId;
 
+/**
+ * represent un abonnement soit annuel ou mensuel
+ */
 public class Abonnement {
 
 

@@ -2,6 +2,10 @@ package mongoDB.modele;
 
 import org.bson.types.ObjectId;
 
+
+/**
+ * represent un ticket de transport
+ */
 public class Ticket {
 
     private ObjectId id;

@@ -10,6 +10,10 @@ import java.util.Collection;
 
 public class FabriqueTicket {
 
+    /**
+     * permet de creer un ticket à partir de la date du jour
+     * @return
+     */
     public static Ticket createTicket(){
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -25,6 +29,13 @@ public class FabriqueTicket {
     }
 
 
+    /**
+     * permet de recuperer un ticket de la collection
+     * @param objectId
+     * @param dateAchat
+     * @param etat
+     * @return
+     */
     public static Ticket createTicket(ObjectId objectId,String dateAchat,String etat){
 
 
@@ -38,17 +49,16 @@ public class FabriqueTicket {
         return ticket;
     }
 
-    public static Collection<Ticket> createDixTicket(){
-        Collection<Ticket> tickets = new ArrayList<>();
 
+    /**
+     * permet de creer de dix tickets
+     * @return
+     */
+    public static Collection<Ticket> createDixTicket(){
+
+        Collection<Ticket> tickets = new ArrayList<>();
         for(int i = 0;i<10; i++){
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate localDate = LocalDate.now();
-            Ticket ticket= new Ticket();
-            ticket.setId(new ObjectId());
-            ticket.setDateAchat(dtf.format(localDate));
-            ticket.setEtat("valide");
-            tickets.add(ticket);
+            tickets.add(createTicket());
         }
 
 

@@ -9,6 +9,11 @@ import java.time.format.DateTimeFormatter;
 
 public class FabriqueAbonnementMensual {
 
+
+    /**
+     * permet de creer un abonnement annuel à partir de la date du jour
+     * @return
+     */
     public static Abonnement createAbonnementMensual(){
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -25,6 +30,17 @@ public class FabriqueAbonnementMensual {
 
         return abonnement;
     }
+
+
+    /***
+     * permet de creer un Abonnement mensuel à partir de la base
+     * @param objectId
+     * @param type
+     * @param dateDebut
+     * @param dateFin
+     * @param etat
+     * @return
+     */
     public static Abonnement createAbonnementMensual(ObjectId objectId,String type, String dateDebut,String dateFin,String etat){
 
         Abonnement abonnement= new Abonnement();

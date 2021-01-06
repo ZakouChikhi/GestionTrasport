@@ -6,6 +6,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+
+/**
+ * Singelton d'un client mongoDB
+ */
 public class Mongo {
 
 

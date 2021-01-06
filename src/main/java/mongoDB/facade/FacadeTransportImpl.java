@@ -34,6 +34,8 @@ public class FacadeTransportImpl  implements FacadeTransport  {
     MongoDatabase mongoDatabase;
 
 
+
+    // creation du mongoClient et recuperation de la collection
     public FacadeTransportImpl() {
 
 
@@ -45,13 +47,12 @@ public class FacadeTransportImpl  implements FacadeTransport  {
             mongoDatabase.createCollection("transport");
         }
 
-     // mongoDatabase.getCollection("transport").deleteMany(new Document());
+         mongoDatabase.getCollection("transport").deleteMany(new Document());
 
 
 
 
     }
-
 
 
     @Override
@@ -359,7 +360,7 @@ public class FacadeTransportImpl  implements FacadeTransport  {
 
 
                 Timer chrono = new Timer();
-                chrono.schedule(new TimerTicket(mail,documents,transport),36000000);
+                chrono.schedule(new TimerTicket(mail,documents,transport),3600000);
 
 
                 break;

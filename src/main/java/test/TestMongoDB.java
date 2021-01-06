@@ -116,7 +116,7 @@ public class TestMongoDB {
         System.out.println("------------------------------------");
         // zakaria à decider de souscrire à un abonnement annual
         System.out.println("zakaria à decider de souscrire à un abonnement annual");
-        facadeTransport.uptadeAbonnement(mail, FabriqueAbonnementAnnuel.createAbonnementMensual());
+        facadeTransport.uptadeAbonnement(mail, FabriqueAbonnementAnnuel.createAbonnementAnnuel());
 
 
 
@@ -124,6 +124,7 @@ public class TestMongoDB {
         // valider l'abonnement de zakaria
         System.out.println("valider l'abonnement de zakaria");
         facadeTransport.validerAbonnement(mail);
+
 
 
         System.out.println("------------------------------------");
@@ -137,14 +138,9 @@ public class TestMongoDB {
         }
 
 
-        System.out.println("------------------------------------");
-        // valider un ticket de stephane
-        System.out.println("valider le ticket de stephane");
-        try {
-            facadeTransport.validerTicket(mail1);
-        } catch (PasDeTitreValideException e) {
-            e.printStackTrace();
-        }
+
+
+
 
 
         System.out.println("------------------------------------");
@@ -155,6 +151,41 @@ public class TestMongoDB {
         } catch (PasDeTitreValideException e) {
             e.printStackTrace();
         }
+
+
+
+
+
+
+        System.out.println("------------------------------------");
+        // l'achat de d'un tickets par zakaria
+        System.out.println("l'achat d'un ticket par zakaria");
+        facadeTransport.uptadeTicket(mail,FabriqueTicket.createTicket());
+
+
+
+        System.out.println("------------------------------------");
+        // l'achat de d'un ticket par zakaria
+        System.out.println("l'achat d'un ticket par zakaria");
+        facadeTransport.uptadeTicket(mail,FabriqueTicket.createTicket());
+
+
+
+
+        System.out.println("------------------------------------");
+        // valider un ticket de zakaria
+        System.out.println("valider le ticket de zakaria");
+        try {
+            facadeTransport.validerTicket(mail);
+        } catch (PasDeTitreValideException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("------------------------------------");
+        // l'achat de dix tickets par sabah
+        System.out.println("l'achat de dix tickets par cheba sabah");
+        facadeTransport.uptadeDixTicket(mail,FabriqueTicket.createDixTicket());
 
 
     }
