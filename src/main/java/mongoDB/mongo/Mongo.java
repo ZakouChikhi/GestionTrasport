@@ -33,11 +33,9 @@ public class Mongo {
         // Utility method to get user collection
 
         private MongoCollection<Document> getUserCollection() {
-
             if (getDB().getCollection("transport")==null){
                 getDB().createCollection("transport");
             }
-
             return getDB().getCollection("transport");
 
         }
