@@ -12,8 +12,10 @@ import mongoDB.facade.FacadeTransportImpl;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
 import java.text.ParseException;
+import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.lang.String;
 
 public class TestMongoDB {
     public static void main(String[] args) throws MailNonTrouverException, ParseException, PasDabonnementValideException, MailDejaDansLaCollectionException {
@@ -22,9 +24,9 @@ public class TestMongoDB {
         FacadeTransport facadeTransport = new FacadeTransportImpl();
 
         System.out.println("------------------------------------");
-        // creer une gestion d'abonnement pour le mail zakaria sans ticket ni abonnement
-        System.out.println("creer une gestion d'abonnement pour le mail zakaria sans ticket ni abonnement");
-        String mail="zakaria@live.fr";
+        // creer une gestion d'abonnement pour le mail Adrien sans ticket ni abonnement
+        System.out.println("creer une gestion d'abonnement pour le mail Adrien sans ticket ni abonnement");
+        String mail="Adrien@live.fr";
         GestionAbonnement gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(mail);
         System.out.println(gestionAbonnement.toString());
 
@@ -44,7 +46,7 @@ public class TestMongoDB {
         System.out.println("------------------------------------");
         // creer une gestion d'abonnement pour le mail2 avec dix tickets et sans abonnement
         System.out.println("creer une gestion d'abonnement pour le mail2 avec dix tickets et sans abonnement");
-        String mail2="moal@live.fr";
+        String mail2="Moktar@live.fr";
 
         GestionAbonnement gestionAbonnement2 = FabriqueGestionAbonnement.createGestionAbonnement(
                 mail2,
@@ -97,8 +99,8 @@ public class TestMongoDB {
 
 
         System.out.println("------------------------------------");
-        // souscrire moal à un abonnement mensuel
-        System.out.println("souscrire moal à un abonnement mensuel");
+        // souscrire Moktar à un abonnement mensuel
+        System.out.println("souscrire Moktar à un abonnement mensuel");
         facadeTransport.uptadeAbonnement(mail2,FabriqueAbonnementMensual.createAbonnementMensual());
 
 
@@ -114,15 +116,15 @@ public class TestMongoDB {
 
 
         System.out.println("------------------------------------");
-        // zakaria à decider de souscrire à un abonnement annual
-        System.out.println("zakaria à decider de souscrire à un abonnement annual");
+        // Adrien à decider de souscrire à un abonnement annual
+        System.out.println("Adrien à decider de souscrire à un abonnement annual");
         facadeTransport.uptadeAbonnement(mail, FabriqueAbonnementAnnuel.createAbonnementAnnuel());
 
 
 
         System.out.println("------------------------------------");
-        // valider l'abonnement de zakaria
-        System.out.println("valider l'abonnement de zakaria");
+        // valider l'abonnement de Adrien
+        System.out.println("valider l'abonnement de Adrien");
         facadeTransport.validerAbonnement(mail);
 
 
@@ -144,8 +146,8 @@ public class TestMongoDB {
 
 
         System.out.println("------------------------------------");
-        // valider un ticket de zakaria (n'a pas de ticket valide
-        System.out.println("valider le ticket de zakaria");
+        // valider un ticket de Adrien (n'a pas de ticket valide
+        System.out.println("valider le ticket de Adrien");
         try {
             facadeTransport.validerTicket(mail);
         } catch (PasDeTitreValideException e) {
@@ -158,23 +160,23 @@ public class TestMongoDB {
 
 
         System.out.println("------------------------------------");
-        // l'achat de d'un tickets par zakaria
-        System.out.println("l'achat d'un ticket par zakaria");
+        // l'achat de d'un tickets par Adrien
+        System.out.println("l'achat d'un ticket par Adrien");
         facadeTransport.uptadeTicket(mail,FabriqueTicket.createTicket());
 
 
 
         System.out.println("------------------------------------");
-        // l'achat de d'un ticket par zakaria
-        System.out.println("l'achat d'un ticket par zakaria");
+        // l'achat de d'un ticket par Adrien
+        System.out.println("l'achat d'un ticket par Adrien");
         facadeTransport.uptadeTicket(mail,FabriqueTicket.createTicket());
 
 
 
 
         System.out.println("------------------------------------");
-        // valider un ticket de zakaria
-        System.out.println("valider le ticket de zakaria");
+        // valider un ticket de Adrien
+        System.out.println("valider le ticket de Adrien");
         try {
             facadeTransport.validerTicket(mail);
         } catch (PasDeTitreValideException e) {
