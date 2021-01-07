@@ -261,7 +261,7 @@ public class FacadeTransportImpl  implements FacadeTransport  {
 
                      }else{
 
-                         abonnement1= FabriqueAbonnementAnnuel.createAbonnementAnnuel(abonnement.getObjectId("_id"),abonnement.getString("type"),abonnement.getString("dateDebut"),abonnement.getString("dateFin"),abonnement.getString("etat"));
+                         abonnement1= FabriqueAbonnementAnnuel.createAbonnementAnnuel();
 
                      }
                      gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(e.getObjectId("_id"),e.getString("mailUtilisateur"),abonnement1);
@@ -289,7 +289,7 @@ public class FacadeTransportImpl  implements FacadeTransport  {
 
                      }else{
 
-                         abonnement1= FabriqueAbonnementAnnuel.createAbonnementAnnuel(abonnement.getObjectId("_id"),abonnement.getString("type"),abonnement.getString("dateDebut"),abonnement.getString("dateFin"),abonnement.getString("etat"));
+                         abonnement1= FabriqueAbonnementAnnuel.createAbonnementAnnuel();
 
                      }
                      gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(e.getObjectId("_id"),e.getString("mailUtilisateur"),abonnement1,tickets);

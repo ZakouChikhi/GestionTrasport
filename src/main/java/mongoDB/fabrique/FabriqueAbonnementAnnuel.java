@@ -23,15 +23,17 @@ public class FabriqueAbonnementAnnuel {
 
         return abonnement;
     }
-    public static Abonnement createAbonnementAnnuel(ObjectId objectId,String type, String dateDebut,String dateFin,String etat){
+    public static Abonnement createAbonnementAnnuel(){
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate localDate = LocalDate.now();
 
         Abonnement abonnement= new Abonnement();
-        abonnement.setId(objectId);
-        abonnement.setType(type);
-        abonnement.setDateDebut(dateDebut);
-        abonnement.setDateFin(dateFin);
-        abonnement.setEtat(etat);
+        abonnement.setId(new ObjectId());
+        abonnement.setType("Annuel");
+        abonnement.setDateDebut(dtf.format(localDate));
+        abonnement.setDateFin(dtf.format(localDate.plusMonths(12)));
+        abonnement.setEtat("valide");
 
 
         return abonnement;
