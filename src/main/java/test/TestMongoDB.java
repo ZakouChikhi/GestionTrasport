@@ -12,8 +12,10 @@ import mongoDB.facade.FacadeTransportImpl;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
 import java.text.ParseException;
+import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.lang.String;
 
 public class TestMongoDB {
     public static void main(String[] args) throws MailNonTrouverException, ParseException, PasDabonnementValideException, MailDejaDansLaCollectionException {
