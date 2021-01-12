@@ -3,10 +3,15 @@
  `*cd MySQLCompose*`
 
 *Telecharher l'image dans un container:
- `*docker-compose up -d *`
+
+`*docker-compose up -d*`
+
+
 
 *Acceder à un client mysql:
- `*docker exec -it mysqlcompose_gesttrans_db_1 mysql -uroot -p*`
+
+`*docker exec -it mysqlcompose_gesttrans_db_1 mysql -uroot -p*`
+
 
 `*use gettrans*`
 
