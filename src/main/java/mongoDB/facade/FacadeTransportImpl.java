@@ -343,32 +343,36 @@ public class FacadeTransportImpl  implements FacadeTransport  {
         int i = 0;
         Ticket ticketUpdate=null;
 
-        for (Ticket ticket : tickets){
-
-
-            if (ticket.getEtat().equals("valide")){
-
-                System.out.println("votre ticket est valide pour une heure");
-                i++;
-
-                ticketUpdate = ticket;
-                ticketUpdate.setEtat("expire");
-                tickets.remove(ticket);
-                tickets.add(ticketUpdate);
-                MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
-                Collection<Document> documents = acheterDixTicket(tickets);
-
-
-                Timer chrono = new Timer();
-                chrono.schedule(new TimerTicket(mail,documents,transport),3600000);
-
-
-                break;
-
-            }
-        }
-        if (i==0){
+        if(tickets==null){
             throw new PasDeTitreValideException("vous avez pas de titre valide");
+        }else {
+            for (Ticket ticket : tickets){
+
+
+                if (ticket.getEtat().equals("valide")){
+
+                    System.out.println("votre ticket est valide pour une heure");
+                    i++;
+
+                    ticketUpdate = ticket;
+                    ticketUpdate.setEtat("expire");
+                    tickets.remove(ticket);
+                    tickets.add(ticketUpdate);
+                    MongoCollection<Document> transport = mongoDatabase.getCollection("transport");
+                    Collection<Document> documents = acheterDixTicket(tickets);
+
+
+                    Timer chrono = new Timer();
+                    chrono.schedule(new TimerTicket(mail,documents,transport),3600000);
+
+
+                    break;
+
+                }
+            }
+            if (i==0){
+                throw new PasDeTitreValideException("vous avez pas de titre valide");
+            }
         }
     }
 

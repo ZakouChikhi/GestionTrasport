@@ -167,6 +167,13 @@ public class TestMongoDB {
 
 
         System.out.println("------------------------------------");
+        // l'achat de dix tickets par sabah
+        System.out.println("l'achat de dix tickets par cheba sabah");
+        facadeTransport.uptadeDixTicket(mail3,FabriqueTicket.createDixTicket());
+
+
+
+        System.out.println("------------------------------------");
         // l'achat de d'un ticket par zakaria
         System.out.println("l'achat d'un ticket par zakaria");
         facadeTransport.uptadeTicket(mail,FabriqueTicket.createTicket());
@@ -184,10 +191,6 @@ public class TestMongoDB {
         }
 
 
-        System.out.println("------------------------------------");
-        // l'achat de dix tickets par sabah
-        System.out.println("l'achat de dix tickets par cheba sabah");
-        facadeTransport.uptadeDixTicket(mail,FabriqueTicket.createDixTicket());
 
 
     }
