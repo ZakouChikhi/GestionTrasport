@@ -5,7 +5,7 @@
 cd DockerCompose
 ----
 
-* Telecharher l'image dans un container :
+* Telecharger l'image dans un container :
 ----
 docker-compose up -d
 ----
