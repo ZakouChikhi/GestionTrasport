@@ -1,0 +1,29 @@
+== Deployement de la base de données MongoDB
+
+* Acceder au repertoire dockerCompose :
+----
+cd DockerCompose
+----
+
+* Telecharher l'image dans un container :
+----
+docker-compose up -d
+----
+
+
+* Acceder à un client Mongo:
+----
+docker exec -it mongoTransportServer mongo
+----
+
+* Acceder à la base gestion de transport
+
+----
+use gestionTransport
+----
+
+
+* Afficher la collection transport
+----
+db.transport.find()
+----

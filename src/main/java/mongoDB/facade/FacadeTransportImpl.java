@@ -16,7 +16,6 @@ import mongoDB.fabrique.FabriqueTicket;
 import mongoDB.modele.Abonnement;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
-import mongoDB.mongo.Mongo;
 import mongoDB.timer.TimerTicket;
 import org.bson.Document;
 import java.text.ParseException;
@@ -47,7 +46,7 @@ public class FacadeTransportImpl  implements FacadeTransport  {
             mongoDatabase.createCollection("transport");
         }
 
-         mongoDatabase.getCollection("transport").deleteMany(new Document());
+       //  mongoDatabase.getCollection("transport").deleteMany(new Document());
 
 
 

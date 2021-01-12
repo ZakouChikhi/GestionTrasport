@@ -1,6 +1,6 @@
 == Deployement de la base de données MySQL
-* Acceder au repertoire MySQLCompose
- `*cd MySQLCompose*`
+* Acceder au repertoire dockerCompose
+ `*cd DockerCompose*`
 
 *Telecharher l'image dans un container:
 
