@@ -8,6 +8,6 @@ public class DatabaseParameters {
     public DatabaseParameters() {
         this.url = "jdbc:mysql://localhost:3306/gesttrans";
         this.username = "root";
-        this.password = "";
+        this.password = "root123";
     }
 }
