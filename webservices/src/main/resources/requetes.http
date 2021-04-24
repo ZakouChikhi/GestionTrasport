@@ -21,7 +21,7 @@ Content-Type: application/json
 Authorization: Basic zak zak
 
 {
-  "id":3 ,
+  "id":2,
   "nom":"moal"
 ,"prenom": "frederic"
 ,"adresse": "2 rue de la folie"
@@ -39,7 +39,7 @@ Content-Type: application/json
 Authorization: Basic zak zak
 
 {
-  "id":4,
+  "id":3,
   "nom":"boichut"
 ,"prenom": "yoan"
 ,"adresse": "2 rue de la folie"

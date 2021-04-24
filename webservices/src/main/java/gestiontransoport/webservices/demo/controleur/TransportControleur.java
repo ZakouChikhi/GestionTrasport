@@ -62,6 +62,9 @@ public class TransportControleur {
     }
 
 
+
+
+
     /**
      * Creation d'une collection d'une gestion Abonnement d'un utilisateur dans la base
      * @param pseudo le pseudo de l'utilisateur en variable uri
@@ -345,6 +348,7 @@ public class TransportControleur {
 
             facadeUserImpl.signOut(utilisateur);
             facadeTransportImpl.removeGestion(pseudo);
+
             return ResponseEntity.noContent().build();
         }
 
