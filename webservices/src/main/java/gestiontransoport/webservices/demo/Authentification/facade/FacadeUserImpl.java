@@ -114,7 +114,7 @@ public class FacadeUserImpl implements FacadeUser {
         try{
             Connection myConn = DriverManager.getConnection(data.url, data.username, data.password);
             Statement myStmt = myConn.createStatement();
-            String SQL = "DELETE FROM `utilisateur` WHERE username='" + user.getUsername() +"'";
+            String SQL = "DELETE FROM `utilisateur` WHERE username='"+user.getUsername()+"'";
 
             ResultSet rs = myStmt.executeQuery(SQL);
 
