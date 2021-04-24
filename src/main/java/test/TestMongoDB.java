@@ -25,7 +25,7 @@ public class TestMongoDB {
         System.out.println("------------------------------------");
         // creer une gestion d'abonnement pour le mail zakaria sans ticket ni abonnement
         System.out.println("creer une gestion d'abonnement pour le mail Adrien sans ticket ni abonnement");
-        String mail="zakaria@live.fr";
+        String mail="adrien@live.fr";
         GestionAbonnement gestionAbonnement = FabriqueGestionAbonnement.createGestionAbonnement(mail);
         System.out.println(gestionAbonnement.toString());
 
@@ -139,14 +139,9 @@ public class TestMongoDB {
         }
 
 
-
-
-
-
-
         System.out.println("------------------------------------");
-        // valider un ticket de zakaria (n'a pas de ticket valide
-        System.out.println("valider le ticket de zakaria");
+        // valider un ticket de Adrien (n'a pas de ticket valide)
+        System.out.println("valider le ticket de Adrien");
         try {
             facadeTransport.validerTicket(mail);
         } catch (PasDeTitreValideException e) {
@@ -155,12 +150,9 @@ public class TestMongoDB {
 
 
 
-
-
-
         System.out.println("------------------------------------");
         // l'achat de d'un tickets par Adrien
-        System.out.println("l'achat d'un ticket par zakaria");
+        System.out.println("l'achat d'un ticket par Adrien");
         facadeTransport.uptadeTicket(mail,FabriqueTicket.createTicket());
 
 
@@ -173,16 +165,16 @@ public class TestMongoDB {
 
 
         System.out.println("------------------------------------");
-        // l'achat de d'un ticket par zakaria
-        System.out.println("l'achat d'un ticket par zakaria");
+        // l'achat de d'un ticket par Adrien
+        System.out.println("l'achat d'un ticket par Adrien");
         facadeTransport.uptadeTicket(mail,FabriqueTicket.createTicket());
 
 
 
 
         System.out.println("------------------------------------");
-        // valider un ticket de zakaria
-        System.out.println("valider le ticket de zakaria");
+        // valider un ticket de Adrien
+        System.out.println("valider le ticket de Adrien");
         try {
             facadeTransport.validerTicket(mail);
         } catch (PasDeTitreValideException e) {
