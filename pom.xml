@@ -37,6 +37,9 @@
         </dependency>
 
     </dependencies>
+    <modules>
+        <module>webservices</module>
+    </modules>
 
 
 

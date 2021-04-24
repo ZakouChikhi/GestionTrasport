@@ -1,6 +1,6 @@
 package test;
-import mongoDB.exception.MailDejaDansLaCollectionException;
-import mongoDB.exception.MailNonTrouverException;
+import mongoDB.exception.PseudoDejaDansLaCollectionException;
+import mongoDB.exception.PseudoNonTrouverException;
 import mongoDB.exception.PasDabonnementValideException;
 import mongoDB.exception.PasDeTitreValideException;
 import mongoDB.fabrique.FabriqueAbonnementAnnuel;
@@ -12,13 +12,12 @@ import mongoDB.facade.FacadeTransportImpl;
 import mongoDB.modele.GestionAbonnement;
 import mongoDB.modele.Ticket;
 import java.text.ParseException;
-import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.lang.String;
 
 public class TestMongoDB {
-    public static void main(String[] args) throws MailNonTrouverException, ParseException, PasDabonnementValideException, MailDejaDansLaCollectionException {
+    public static void main(String[] args) throws PseudoNonTrouverException, ParseException, PasDabonnementValideException, PseudoDejaDansLaCollectionException {
 
 
         FacadeTransport facadeTransport = new FacadeTransportImpl();
@@ -93,7 +92,7 @@ public class TestMongoDB {
         System.out.println("ajouter une gestion déja existante");
         try {
             facadeTransport.creerGestionAbonnement(gestionAbonnement);
-        } catch (MailDejaDansLaCollectionException e) {
+        } catch (PseudoDejaDansLaCollectionException e) {
             e.printStackTrace();
         }
 
@@ -110,7 +109,7 @@ public class TestMongoDB {
         System.out.println("souscrire un mail qui ne se trouve pas de la collection à un abonnement mensual");
         try {
             facadeTransport.uptadeAbonnement("mailErr@live.fr",FabriqueAbonnementMensual.createAbonnementMensual());
-        }catch (MailNonTrouverException e ){
+        }catch (PseudoNonTrouverException e ){
             e.printStackTrace();
         }
 

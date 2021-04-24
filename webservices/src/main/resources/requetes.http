@@ -1,0 +1,162 @@
+### Inscritption d'un utilisateur
+POST http://localhost:8080/transport/utilisateur
+Content-Type: application/json
+Authorization: Basic zak zak
+
+{
+                "id":1 ,
+                "nom":"Chikhi"
+                ,"prenom": "Ahmed Zakaria"
+                ,"adresse": "2 rue de la folie"
+                ,"username": "zakaria"
+                ,"email" : "zakaria@gmail.com"
+                ,"password" : "zak"
+                ,"date_naissance" : "26/06/1998"
+
+    }
+
+### Inscritption d'un utilisateur
+POST http://localhost:8080/transport/utilisateur
+Content-Type: application/json
+Authorization: Basic zak zak
+
+{
+  "id":3 ,
+  "nom":"moal"
+,"prenom": "frederic"
+,"adresse": "2 rue de la folie"
+,"username": "fred"
+,"email" : "moal@gmail.com"
+,"password" : "fred"
+,"date_naissance" : "26/06/1998"
+
+}
+
+
+### Inscritption d'un utilisateur
+POST http://localhost:8080/transport/utilisateur
+Content-Type: application/json
+Authorization: Basic zak zak
+
+{
+  "id":4,
+  "nom":"boichut"
+,"prenom": "yoan"
+,"adresse": "2 rue de la folie"
+,"username": "yoa"
+,"email" : "boichut@gmail.com"
+,"password" : "yoa"
+,"date_naissance" : "26/06/1998"
+
+}
+
+### creation d'une gestion de transport pour utilisateur
+POST http://localhost:8080/transport/utilisateur/yoa/gestionAbonnement
+Content-Type: application/json
+Authorization: Basic zak zak
+
+{
+"pseudo":  "yoa"
+}
+### creation d'une gestion de transport pour utilisateur
+POST http://localhost:8080/transport/utilisateur/ahmed/gestionAbonnement
+Content-Type: application/json
+Authorization: Basic zak zak
+
+{
+  "pseudo":  "ahmed"
+}
+
+### creation d'une gestion de transport pour utilisateur
+POST http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement
+Content-Type: application/json
+Authorization: Basic zak zak
+
+{
+  "pseudo":  "zakaria"
+}
+
+
+###  recuperation d'une gestion de transport pour utilisateur par pseudo
+GET http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement
+Accept: application/json
+Authorization: Basic zak zak
+
+
+### achat d'un abonnement par l'utilisateur
+POST http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement/zakaria/abonnement
+Content-Type: application/json
+Authorization: Basic zak zak
+
+
+{
+"type":"Annuel"
+}
+
+
+### recuperation abonnement d'un utilisateur
+GET http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement/zakaria/abonnement/annuel
+Accept: application/json
+Authorization: Basic zak zak
+
+### recuperation abonnement d'un utilisateur
+GET http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement/zakaria/abonnement/mensual
+Accept: application/json
+Authorization: Basic zak zak
+
+
+
+
+
+### achat de tickets par l'utilisateur
+POST http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement/zakaria/tickets?nbrTickets=1
+Authorization: Basic zak zak
+
+
+
+### recuperation collection tickets d'un utilisateur
+GET http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement/zakaria/tickets/1
+Accept: application/json
+Authorization: Basic zak zak
+
+### validation de tickets par l'utilisateur
+POST http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement/zakaria/tickets/1
+Authorization: Basic zak zak
+
+### validation de tickets par l'utilisateur
+POST http://localhost:8080/transport/utilisateur/yoa/gestionAbonnement/yoa/tickets/1
+Authorization: Basic zak zak
+
+
+### validation de tickets par l'utilisateur
+POST http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement/zakaria/abonnement/1
+Authorization: Basic zak zak
+
+
+
+### supression d'un utilisateur par pseudo
+DELETE http://localhost:8080/transport/utilisateur/yoa
+Content-Type: application/json
+Authorization: Basic admin admin
+
+{
+  "id":4,
+  "nom":"boichut"
+,"prenom": "yoan"
+,"adresse": "2 rue de la folie"
+,"username": "yoa"
+,"email" : "boichut@gmail.com"
+,"password" : "yoa"
+,"date_naissance" : "26/06/1998"
+
+}
+
+### supression d'un utilisateur par pseudo
+DELETE http://localhost:8080/transport/utilisateur/yoa/gestionAbonnement/yoa
+Content-Type: application/json
+Authorization: Basic admin admin
+
+{
+  "pseudo": "yoa"
+
+}

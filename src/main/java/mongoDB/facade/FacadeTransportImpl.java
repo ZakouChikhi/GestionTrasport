@@ -5,8 +5,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import mongoDB.exception.MailDejaDansLaCollectionException;
-import mongoDB.exception.MailNonTrouverException;
+import mongoDB.exception.PseudoDejaDansLaCollectionException;
+import mongoDB.exception.PseudoNonTrouverException;
 import mongoDB.exception.PasDabonnementValideException;
 import mongoDB.exception.PasDeTitreValideException;
 import mongoDB.fabrique.FabriqueAbonnementAnnuel;
@@ -100,10 +100,10 @@ public class FacadeTransportImpl  implements FacadeTransport  {
 
 
     @Override
-    public void uptadeAbonnement(String mailUtilisateur, Abonnement abonnement) throws MailNonTrouverException {
+    public void uptadeAbonnement(String mailUtilisateur, Abonnement abonnement) throws PseudoNonTrouverException {
 
       if (!getAllMails().contains(mailUtilisateur)){
-          throw new MailNonTrouverException("mail non trouvé");
+          throw new PseudoNonTrouverException("mail non trouvé");
       }else
         {
 
@@ -126,13 +126,13 @@ public class FacadeTransportImpl  implements FacadeTransport  {
     }
 
     @Override
-    public void uptadeTicket(String mailUtilisateur, Ticket ticket) throws MailNonTrouverException {
+    public void uptadeTicket(String mailUtilisateur, Ticket ticket) throws PseudoNonTrouverException {
 
         //TODO:
 
 
         if (!getAllMails().contains(mailUtilisateur)) {
-            throw new MailNonTrouverException("mail non trouvé");
+            throw new PseudoNonTrouverException("mail non trouvé");
         } else {
 
 
@@ -161,13 +161,13 @@ public class FacadeTransportImpl  implements FacadeTransport  {
 
 
         @Override
-        public void uptadeDixTicket(String mailUtilisateur,Collection<Ticket> tickets) throws MailNonTrouverException {
+        public void uptadeDixTicket(String mailUtilisateur,Collection<Ticket> tickets) throws PseudoNonTrouverException {
 
 
 
 
             if (!getAllMails().contains(mailUtilisateur)){
-                throw new MailNonTrouverException("mail non trouvé");
+                throw new PseudoNonTrouverException("mail non trouvé");
             }else
 
             {
@@ -185,14 +185,14 @@ public class FacadeTransportImpl  implements FacadeTransport  {
     }
 
     @Override
-    public void creerGestionAbonnement(GestionAbonnement gestionAbonnement) throws MailDejaDansLaCollectionException {
+    public void creerGestionAbonnement(GestionAbonnement gestionAbonnement) throws PseudoDejaDansLaCollectionException {
 
 
 
         
        if (getAllMails().contains(gestionAbonnement.getMailUtilisateur())){
 
-           throw new MailDejaDansLaCollectionException("L'utilisateur existe deja");
+           throw new PseudoDejaDansLaCollectionException("L'utilisateur existe deja");
 
        }else {
 
@@ -317,7 +317,7 @@ public class FacadeTransportImpl  implements FacadeTransport  {
     }
 
     @Override
-    public GestionAbonnement getGestion(String mail) throws MailNonTrouverException{
+    public GestionAbonnement getGestion(String mail) throws PseudoNonTrouverException {
         Collection<GestionAbonnement> gestionAbonnements = getAllGestions();
         GestionAbonnement gestionAbonnement1 = null;
 
@@ -329,14 +329,14 @@ public class FacadeTransportImpl  implements FacadeTransport  {
             }
         }
         if (gestionAbonnement1==null){
-            throw new MailNonTrouverException("le mail n'existe pas dans la base");
+            throw new PseudoNonTrouverException("le mail n'existe pas dans la base");
         }
 
         return gestionAbonnement1;
     }
 
     @Override
-    public void validerTicket(String mail) throws MailNonTrouverException, PasDeTitreValideException {
+    public void validerTicket(String mail) throws PseudoNonTrouverException, PasDeTitreValideException {
 
         Collection<Ticket> tickets=getGestion(mail).getTickets();
         int i = 0;
@@ -376,7 +376,7 @@ public class FacadeTransportImpl  implements FacadeTransport  {
     }
 
     @Override
-    public void validerAbonnement(String mail) throws MailNonTrouverException, PasDabonnementValideException, ParseException {
+    public void validerAbonnement(String mail) throws PseudoNonTrouverException, PasDabonnementValideException, ParseException {
         Abonnement abonnement = getGestion(mail).getAbonnement();
 
         if (abonnement!=null){

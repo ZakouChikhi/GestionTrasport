@@ -2,11 +2,6 @@ package test;
 
 import Authentification.facade.FacadeUser;
 import Authentification.facade.FacadeUserImpl;
-import mongoDB.exception.MailDejaDansLaCollectionException;
-import mongoDB.exception.MailNonTrouverException;
-import mongoDB.exception.PasDabonnementValideException;
-import mongoDB.exception.PasDeTitreValideException;
-import java.text.ParseException;
 
 public class Main {
     public static void main(String[] args)  {
