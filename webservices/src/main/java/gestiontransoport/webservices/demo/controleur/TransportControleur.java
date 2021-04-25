@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.print.attribute.standard.Media;
 import java.net.URI;
 import java.text.ParseException;
 import java.util.Collection;
@@ -34,6 +35,11 @@ public class TransportControleur {
 
     @Autowired
     private FacadeUser facadeUserImpl;
+
+    @GetMapping(value = "/utilisateurs", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Utilisateur> getAllUsers(){
+        return facadeUserImpl.getAllUtilisateurs();
+    }
 
 
     /**

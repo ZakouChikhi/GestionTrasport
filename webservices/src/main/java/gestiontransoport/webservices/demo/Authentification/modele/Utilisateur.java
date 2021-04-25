@@ -1,6 +1,14 @@
 package gestiontransoport.webservices.demo.Authentification.modele;
 
+
+import javax.persistence.*;
+
+@Entity
 public class Utilisateur {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(nullable = false, updatable = false)
     private int id;
     private String nom;
     private String prenom;
@@ -9,9 +17,9 @@ public class Utilisateur {
     private String email;
     private String password;
     private String date_naissance;
+    private boolean admin;
 
-    public Utilisateur(int id, String nom, String prenom, String adresse, String username, String email, String password, String date_naissance) {
-        this.id = id;
+    public Utilisateur( String nom, String prenom, String adresse, String username, String email, String password, String date_naissance) {
         this.nom = nom;
         this.prenom = prenom;
         this.adresse = adresse;
@@ -19,6 +27,10 @@ public class Utilisateur {
         this.email = email;
         this.password = password;
         this.date_naissance = date_naissance;
+        this.admin = false;
+    }
+
+    public Utilisateur() {
     }
 
     public int getId() {
@@ -83,6 +95,14 @@ public class Utilisateur {
 
     public void setDate_naissance(String date_naissance) {
         this.date_naissance = date_naissance;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     @Override
