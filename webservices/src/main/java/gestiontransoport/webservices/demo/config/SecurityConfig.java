@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 
@@ -19,23 +20,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
-    protected UserDetailsService userDetailsService() {
-        UserDetails fred = User.builder()
-                .username("zak").password("{noop}zak").roles("USER").build();
-        UserDetails admin = User.builder()
-                .username("admin").password("{noop}admin").roles("USER","ADMIN").build();
-        return new InMemoryUserDetailsManager(fred,admin);
+    protected UserDetailsService userDetailsService(){
+        return new CustomUserDetailsService();
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/transport/utilisateur").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/transport/**").hasRole("ADMIN")
-                .anyRequest().hasRole("USER")
+                .antMatchers(HttpMethod.POST,"/api/v*/transport/utilisateur").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v*/transport/utilisateur/**").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/api/v*/transport/utilisateur/*/gestionAbonnement/*").hasRole("USER")
+                .anyRequest().permitAll()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }

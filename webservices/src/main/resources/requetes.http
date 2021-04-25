@@ -50,24 +50,6 @@ Authorization: Basic zak zak
 
 }
 
-
-### Inscritption d'un utilisateur
-POST http://localhost:8080/transport/utilisateur
-Content-Type: application/json
-Authorization: Basic zak zak
-
-{
-  "id":5,
-  "nom":"ronaldo"
-,"prenom": "cristiano"
-,"adresse": "2 rue de paris"
-,"username": "cris"
-,"email" : "cris@gmail.com"
-,"password" : "cris"
-,"date_naissance" : "26/06/1956"
-
-}
-
 ### creation d'une gestion de transport pour utilisateur
 POST http://localhost:8080/transport/utilisateur/yoa/gestionAbonnement
 Content-Type: application/json
@@ -97,11 +79,6 @@ Authorization: Basic zak zak
 
 ###  recuperation d'une gestion de transport pour utilisateur par pseudo
 GET http://localhost:8080/transport/utilisateur/zakaria/gestionAbonnement
-Accept: application/json
-Authorization: Basic zak zak
-
-###  recuperation d'une gestion de transport pour utilisateur par pseudo
-GET http://localhost:8080/transport/utilisateur/yoa/gestionAbonnement
 Accept: application/json
 Authorization: Basic zak zak
 
@@ -180,5 +157,6 @@ Content-Type: application/json
 Authorization: Basic admin admin
 
 {
-  "username": "yoa"
+  "pseudo": "yoa"
+
 }
