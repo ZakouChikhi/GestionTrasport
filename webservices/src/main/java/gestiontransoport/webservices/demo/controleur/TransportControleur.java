@@ -1,10 +1,7 @@
 package gestiontransoport.webservices.demo.controleur;
 import gestiontransoport.webservices.demo.Authentification.modele.Utilisateur;
 import gestiontransoport.webservices.demo.Authentification.facade.FacadeUser;
-import gestiontransoport.webservices.demo.mongoDB.exception.PasDabonnementValideException;
-import gestiontransoport.webservices.demo.mongoDB.exception.PasDeTitreValideException;
-import gestiontransoport.webservices.demo.mongoDB.exception.PseudoDejaDansLaCollectionException;
-import gestiontransoport.webservices.demo.mongoDB.exception.PseudoNonTrouverException;
+import gestiontransoport.webservices.demo.mongoDB.exception.*;
 import gestiontransoport.webservices.demo.mongoDB.fabrique.FabriqueAbonnementAnnuel;
 import gestiontransoport.webservices.demo.mongoDB.fabrique.FabriqueAbonnementMensual;
 import gestiontransoport.webservices.demo.mongoDB.facade.FacadeTransport;
@@ -83,21 +80,25 @@ public class TransportControleur {
                                                          @RequestBody GestionAbonnement gestionAbonnement, UriComponentsBuilder base){
 
 
-        if(!Objects.isNull(facadeUserImpl.getEmailByPseudo(pseudo))){
+        try {
+            if(!Objects.isNull(facadeUserImpl.getEmailByPseudo(pseudo))){
 
 
-            try {
-                this.facadeTransportImpl.creerGestionAbonnement(gestionAbonnement);
-            } catch (PseudoDejaDansLaCollectionException e) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                        "le pseudo est deja dans la collection"
-                );
+                try {
+                    this.facadeTransportImpl.creerGestionAbonnement(gestionAbonnement);
+                } catch (PseudoDejaDansLaCollectionException e) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                            "le pseudo est deja dans la collection"
+                    );
+                }
+
+
+                URI location = base.path("transport/utilisateur/{pseudo}/gestionAbonnement/{pseudo}").buildAndExpand(pseudo).toUri();
+                return ResponseEntity.created(location).body("gestion ajoutée a la base");
+
             }
-
-
-            URI location = base.path("transport/utilisateur/{pseudo}/gestionAbonnement/{pseudo}").buildAndExpand(pseudo).toUri();
-            return ResponseEntity.created(location).body("gestion ajoutée a la base");
-
+        } catch (UtilisateurInexistantException e) {
+            return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body("L'utilisateur n'est pas inscrit");
@@ -216,39 +217,43 @@ public class TransportControleur {
     public ResponseEntity<String> achatTickets(@PathVariable String pseudo, @RequestParam int nbrTickets,UriComponentsBuilder base){
 
 
-        if(!Objects.isNull(facadeUserImpl.getEmailByPseudo(pseudo))) {
+        try {
+            if(!Objects.isNull(facadeUserImpl.getEmailByPseudo(pseudo))) {
 
-            switch (nbrTickets) {
+                switch (nbrTickets) {
 
-                case 1:
-                    try {
-                        facadeTransportImpl.uptadeTicket(pseudo);
-                        URI location = base.path("transport/utilisateur/{pseudo}/gestionAbonnement/tickets/{a}").buildAndExpand(pseudo, 1).toUri();
-                        return ResponseEntity.created(location).body("Vous avez acheté un ticket");
+                    case 1:
+                        try {
+                            facadeTransportImpl.uptadeTicket(pseudo);
+                            URI location = base.path("transport/utilisateur/{pseudo}/gestionAbonnement/tickets/{a}").buildAndExpand(pseudo, 1).toUri();
+                            return ResponseEntity.created(location).body("Vous avez acheté un ticket");
 
-                    } catch (PseudoNonTrouverException e) {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("utilisateur pas trouve");
-                    }
+                        } catch (PseudoNonTrouverException e) {
+                            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("utilisateur pas trouve");
+                        }
 
-                case 10:
-                    try {
-                        facadeTransportImpl.uptadeDixTicket(pseudo);
-                        URI location = base.path("transport/utilisateur/{pseudo}/gestionAbonnement/tickets/{a}").buildAndExpand(pseudo, 1).toUri();
-                        return ResponseEntity.created(location).body("Vous avez acheté dix tickets");
+                    case 10:
+                        try {
+                            facadeTransportImpl.uptadeDixTicket(pseudo);
+                            URI location = base.path("transport/utilisateur/{pseudo}/gestionAbonnement/tickets/{a}").buildAndExpand(pseudo, 1).toUri();
+                            return ResponseEntity.created(location).body("Vous avez acheté dix tickets");
 
-                    } catch (PseudoNonTrouverException e) {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("utilisateur pas trouve");
+                        } catch (PseudoNonTrouverException e) {
+                            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("utilisateur pas trouve");
 
-                    }
+                        }
 
-                default:
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("nombre tickets non autorise");
+                    default:
+                        return ResponseEntity.status(HttpStatus.CONFLICT).body("nombre tickets non autorise");
 
+
+                }
 
             }
-
+        } catch (UtilisateurInexistantException e) {
+            return ResponseEntity.notFound().build();
         }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("utilisateur pas trouve");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("utilisateur pas trouve");
 
 
 
@@ -350,11 +355,18 @@ public class TransportControleur {
     public ResponseEntity  deleteUtilisateurById(@PathVariable String pseudo,@RequestBody Utilisateur utilisateur) {
 
 
-        if(!Objects.isNull(facadeUserImpl.getEmailByPseudo(pseudo))) {
+        try {
+            if(!Objects.isNull(facadeUserImpl.getEmailByPseudo(pseudo))) {
 
-            facadeUserImpl.signOut(utilisateur);
-            facadeTransportImpl.removeGestion(pseudo);
+                try {
+                    facadeUserImpl.signOut(utilisateur);
+                    return ResponseEntity.noContent().build();
+                } catch (UtilisateurInexistantException e) {
+                    return ResponseEntity.notFound().build();
+                }
 
+            }
+        } catch (UtilisateurInexistantException e) {
             return ResponseEntity.noContent().build();
         }
 
@@ -372,17 +384,21 @@ public class TransportControleur {
     public ResponseEntity  deleteGestionAbonnementById(@PathVariable String pseudo,@RequestBody GestionAbonnement gestionAbonnement) {
 
 
-        if(!Objects.isNull(facadeUserImpl.getEmailByPseudo(pseudo))) {
+        try {
+            if(!Objects.isNull(facadeUserImpl.getEmailByPseudo(pseudo))) {
 
-            try {
-                facadeTransportImpl.getGestion(pseudo);
+                try {
+                    facadeTransportImpl.getGestion(pseudo);
 
-                facadeTransportImpl.removeGestion(gestionAbonnement.getPseudo());
+                    facadeTransportImpl.removeGestion(gestionAbonnement.getPseudo());
 
-                return ResponseEntity.noContent().build();
-            } catch (PseudoNonTrouverException e) {
-                ResponseEntity.notFound().build();
+                    return ResponseEntity.noContent().build();
+                } catch (PseudoNonTrouverException e) {
+                    ResponseEntity.notFound().build();
+                }
             }
+        } catch (UtilisateurInexistantException e) {
+            return ResponseEntity.notFound().build();
         }
 
 

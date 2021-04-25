@@ -2,13 +2,17 @@ package gestiontransoport.webservices.demo.Authentification.facade;
 
 
 import gestiontransoport.webservices.demo.Authentification.DatabaseParameters;
+import gestiontransoport.webservices.demo.Authentification.exceptions.UtilisateurDejaConnecte;
+import gestiontransoport.webservices.demo.Authentification.exceptions.UtilisateurDejaDeconnecte;
 import gestiontransoport.webservices.demo.Authentification.modele.Utilisateur;
 import gestiontransoport.webservices.demo.Authentification.repository.UtilisateurRepository;
 import gestiontransoport.webservices.demo.mongoDB.exception.PseudoDejaDansLaCollectionException;
+import gestiontransoport.webservices.demo.mongoDB.exception.UtilisateurInexistantException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -35,45 +39,34 @@ public class FacadeUserImpl implements FacadeUser {
     }
 
     // Authentification ou Connexion d'un utilisateur
-    public void logIn(String username, String password) {
-
-
+    @Override
+    @Transactional
+    public void logIn(String username) throws UtilisateurInexistantException, UtilisateurDejaConnecte {
+        Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsername(username);
+        if (utilisateur.isEmpty()){
+            throw new UtilisateurInexistantException();
+        }
+        if (utilisateur.get().isConnected()){
+            throw new UtilisateurDejaConnecte();
+        }
+        utilisateur.get().setConnected(true);
     }
 
     //Deconnexion d'un utilisateur
-    public void logOut(Utilisateur user) {
-        String databaseUsername = "";
-
-        DatabaseParameters data = new DatabaseParameters();
-
-        try{
-            Connection myConn = DriverManager.getConnection(data.url, data.username, data.password);
-            Statement myStmt = myConn.createStatement();
-            String SQL = "SELECT * FROM utilisateur WHERE username='" + user.getUsername() + "'";
-
-            ResultSet rs = myStmt.executeQuery(SQL);
-
-            // Check Username and Password
-            while (rs.next()) {
-                databaseUsername = rs.getString("username");
-            }
-
-        }catch (Exception exc){
-            exc.printStackTrace();
+    @Override
+    @Transactional
+    public void logOut(String username) throws UtilisateurInexistantException, UtilisateurDejaDeconnecte {
+        Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsername(username);
+        if (utilisateur.isEmpty()){
+            throw new UtilisateurInexistantException();
         }
-
-        if (databaseUsername != ""){
-            System.out.println("Vous etes deconnecté");
-        }else{
-            System.out.println("Echec");
+        if (!utilisateur.get().isConnected()){
+            throw new UtilisateurDejaDeconnecte();
         }
-
-
+        utilisateur.get().setConnected(false);
     }
 
     //Inscription d'un utilisateur
-
-
     @Override
     public Utilisateur singIn(Utilisateur user) throws PseudoDejaDansLaCollectionException {
             Optional<Utilisateur> utilisateur = utilisateurRepository.findByEmail(user.getUsername());
@@ -87,82 +80,31 @@ public class FacadeUserImpl implements FacadeUser {
     }
 
     //Procedure de desinscription
-    public void signOut(Utilisateur user) {
-        DatabaseParameters data = new DatabaseParameters();
-
-        try{
-            Connection myConn = DriverManager.getConnection(data.url, data.username, data.password);
-            Statement myStmt = myConn.createStatement();
-            String SQL = "DELETE FROM `utilisateur` WHERE username='" + user.getUsername() +"'";
-
-            ResultSet rs = myStmt.executeQuery(SQL);
-
-        }catch (Exception exc){
-            exc.printStackTrace();
+    @Override
+    public void signOut(Utilisateur utilisateur) throws UtilisateurInexistantException {
+        Optional<Utilisateur> user = utilisateurRepository.findByUsername(utilisateur.getUsername());
+        if (user.isEmpty()){
+            throw new UtilisateurInexistantException();
         }
-
-        System.out.println("Compte utilisateur supprimer");
-
+        utilisateurRepository.deleteById(user.get().getId());
     }
 
     @Override
-    public String getEmailById(int id) {
-        String databaseEmail = "";
-
-        DatabaseParameters data = new DatabaseParameters();
-
-        try{
-            Connection myConn = DriverManager.getConnection(data.url, data.username, data.password);
-            Statement myStmt = myConn.createStatement();
-            String SQL = "SELECT * FROM utilisateur WHERE id='" + id + "'";
-
-            ResultSet rs = myStmt.executeQuery(SQL);
-
-            // Check Username and Password
-            while (rs.next()) {
-                databaseEmail = rs.getString("email");
-            }
-
-        }catch (Exception exc){
-            exc.printStackTrace();
+    public String getEmailById(int id) throws UtilisateurInexistantException {
+        Optional<Utilisateur> user = utilisateurRepository.findById(id);
+        if (user.isEmpty()){
+            throw new UtilisateurInexistantException();
         }
-
-        if (databaseEmail != ""){
-            return databaseEmail;
-        }else{
-            System.out.println("Echec");
-        }
-        return null;
+        return user.get().getEmail();
     }
 
 
     @Override
-    public String getEmailByPseudo(String pseudo){
-        String databaseEmail = "";
-
-        DatabaseParameters data = new DatabaseParameters();
-
-        try{
-            Connection myConn = DriverManager.getConnection(data.url, data.username, data.password);
-            Statement myStmt = myConn.createStatement();
-            String SQL = "SELECT * FROM utilisateur WHERE username='" + pseudo + "'";
-
-            ResultSet rs = myStmt.executeQuery(SQL);
-
-            // Check Username and Password
-            while (rs.next()) {
-                databaseEmail = rs.getString("email");
-            }
-
-        }catch (Exception exc){
-            exc.printStackTrace();
+    public String getEmailByPseudo(String pseudo) throws UtilisateurInexistantException {
+        Optional<Utilisateur> user = utilisateurRepository.findByUsername(pseudo);
+        if (user.isEmpty()){
+            throw new UtilisateurInexistantException();
         }
-
-        if (databaseEmail != ""){
-            return databaseEmail;
-        }else{
-            System.out.println("Echec ");;
-        }
-        return null;
+        return user.get().getEmail();
     }
 }

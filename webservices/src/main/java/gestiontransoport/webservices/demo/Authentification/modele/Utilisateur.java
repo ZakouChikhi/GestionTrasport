@@ -18,6 +18,7 @@ public class Utilisateur {
     private String password;
     private String date_naissance;
     private boolean admin;
+    private boolean connected;
 
     public Utilisateur( String nom, String prenom, String adresse, String username, String email, String password, String date_naissance) {
         this.nom = nom;
@@ -28,6 +29,7 @@ public class Utilisateur {
         this.password = password;
         this.date_naissance = date_naissance;
         this.admin = false;
+        this.connected = false;
     }
 
     public Utilisateur() {
@@ -103,6 +105,14 @@ public class Utilisateur {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 
     @Override
