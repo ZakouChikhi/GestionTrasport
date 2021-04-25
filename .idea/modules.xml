@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/webservices/demo.iml" filepath="$PROJECT_DIR$/webservices/demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/groupe-5.iml" filepath="$PROJECT_DIR$/.idea/groupe-5.iml" />
       <module fileurl="file://$PROJECT_DIR$/webservices/webservices.iml" filepath="$PROJECT_DIR$/webservices/webservices.iml" />
     </modules>

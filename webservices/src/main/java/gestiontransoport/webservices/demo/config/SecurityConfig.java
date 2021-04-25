@@ -30,9 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/transport/utilisateur").permitAll()
-                .antMatchers(HttpMethod.POST,"transport/utilisateur/**").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE, "/transport/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/api/v*/transport/utilisateur").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v*/transport/utilisateur/**").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/api/v*/transport/utilisateur/*/gestionAbonnement/*").hasRole("USER")
                 .anyRequest().permitAll()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -1,9 +1,7 @@
 package gestiontransoport.webservices.demo.Authentification.facade;
 
 
-import gestiontransoport.webservices.demo.Authentification.DatabaseParameters;
-import gestiontransoport.webservices.demo.Authentification.exceptions.UtilisateurDejaConnecte;
-import gestiontransoport.webservices.demo.Authentification.exceptions.UtilisateurDejaDeconnecte;
+
 import gestiontransoport.webservices.demo.Authentification.modele.Utilisateur;
 import gestiontransoport.webservices.demo.Authentification.repository.UtilisateurRepository;
 import gestiontransoport.webservices.demo.mongoDB.exception.PseudoDejaDansLaCollectionException;
@@ -11,12 +9,6 @@ import gestiontransoport.webservices.demo.mongoDB.exception.UtilisateurInexistan
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import javax.transaction.Transactional;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -38,40 +30,14 @@ public class FacadeUserImpl implements FacadeUser {
         return utilisateurRepository.findAll();
     }
 
-    // Authentification ou Connexion d'un utilisateur
-    @Override
-    @Transactional
-    public void logIn(String username) throws UtilisateurInexistantException, UtilisateurDejaConnecte {
-        Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsername(username);
-        if (utilisateur.isEmpty()){
-            throw new UtilisateurInexistantException();
-        }
-        if (utilisateur.get().isConnected()){
-            throw new UtilisateurDejaConnecte();
-        }
-        utilisateur.get().setConnected(true);
-    }
 
-    //Deconnexion d'un utilisateur
-    @Override
-    @Transactional
-    public void logOut(String username) throws UtilisateurInexistantException, UtilisateurDejaDeconnecte {
-        Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsername(username);
-        if (utilisateur.isEmpty()){
-            throw new UtilisateurInexistantException();
-        }
-        if (!utilisateur.get().isConnected()){
-            throw new UtilisateurDejaDeconnecte();
-        }
-        utilisateur.get().setConnected(false);
-    }
 
     //Inscription d'un utilisateur
     @Override
     public Utilisateur singIn(Utilisateur user) throws PseudoDejaDansLaCollectionException {
-            Optional<Utilisateur> utilisateur = utilisateurRepository.findByEmail(user.getUsername());
+            Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsername(user.getUsername());
             boolean emailValid = emailValidator.test(user.getEmail());
-            if ((utilisateur.isPresent())&&(!emailValid)){
+            if (utilisateur.isPresent()){
                 throw new PseudoDejaDansLaCollectionException("le pseudo est deja pris");
             }
 
@@ -81,8 +47,8 @@ public class FacadeUserImpl implements FacadeUser {
 
     //Procedure de desinscription
     @Override
-    public void signOut(Utilisateur utilisateur) throws UtilisateurInexistantException {
-        Optional<Utilisateur> user = utilisateurRepository.findByUsername(utilisateur.getUsername());
+    public void signOut(String username) throws UtilisateurInexistantException {
+        Optional<Utilisateur> user = utilisateurRepository.findByUsername(username);
         if (user.isEmpty()){
             throw new UtilisateurInexistantException();
         }

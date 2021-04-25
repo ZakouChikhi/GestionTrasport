@@ -10,10 +10,8 @@ import gestiontransoport.webservices.demo.mongoDB.exception.UtilisateurInexistan
 import java.util.Collection;
 
 public interface FacadeUser {
-    void logIn(String username) throws UtilisateurInexistantException, UtilisateurDejaConnecte;
-    void logOut(String username) throws UtilisateurInexistantException, UtilisateurDejaDeconnecte;
-    Utilisateur singIn(Utilisateur user) throws PseudoDejaDansLaCollectionException;
-    void signOut(Utilisateur utilisateur) throws UtilisateurInexistantException;
+   Utilisateur singIn(Utilisateur user) throws PseudoDejaDansLaCollectionException;
+    void signOut(String pseudo) throws UtilisateurInexistantException;
     String getEmailById(int id) throws UtilisateurInexistantException;
 
     String getEmailByPseudo(String pseudo) throws UtilisateurInexistantException;

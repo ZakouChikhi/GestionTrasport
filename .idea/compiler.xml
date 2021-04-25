@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="groupe-5" />
-        <module name="demo" />
         <module name="webservices" />
       </profile>
     </annotationProcessing>

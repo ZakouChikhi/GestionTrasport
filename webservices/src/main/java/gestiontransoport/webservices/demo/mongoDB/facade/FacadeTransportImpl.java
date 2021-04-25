@@ -19,7 +19,6 @@ import gestiontransoport.webservices.demo.mongoDB.modele.GestionAbonnement;
 import gestiontransoport.webservices.demo.mongoDB.modele.Ticket;
 import gestiontransoport.webservices.demo.mongoDB.timer.TimerTicket;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 import java.text.ParseException;
@@ -441,7 +440,7 @@ public class FacadeTransportImpl  implements FacadeTransport  {
     @Override
     public void removeGestion(String pseudo) {
 
-        mongoDatabase.getCollection("transport").deleteOne(Filters.eq("pseudp", pseudo));
+        mongoDatabase.getCollection("transport").deleteOne(Filters.eq("pseudo", pseudo));
 
     }
 
